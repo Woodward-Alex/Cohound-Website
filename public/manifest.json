@@ -1,0 +1,27 @@
+{
+  "name": "CoHound - Tailored for your dog. Built for you.",
+  "short_name": "CoHound",
+  "description": "Connect with dog-friendly spaces, services, and pet owners in your community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#FFC857",
+  "icons": [
+    {
+      "src": "/favicon-color.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-color.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-color.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

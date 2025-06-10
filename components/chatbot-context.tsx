@@ -1,0 +1,29 @@
+// contexts/chatbot-context.tsx
+"use client"
+
+import { createContext, useContext, useState } from "react"
+
+type ChatbotContextType = {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}
+
+const ChatbotContext = createContext<ChatbotContextType | undefined>(undefined)
+
+export function ChatbotProvider({ children }: { children: React.ReactNode }) {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <ChatbotContext.Provider value={{ isOpen, setIsOpen }}>
+      {children}
+    </ChatbotContext.Provider>
+  )
+}
+
+export function useChatbot() {
+  const context = useContext(ChatbotContext)
+  if (context === undefined) {
+    throw new Error("useChatbot must be used within a ChatbotProvider")
+  }
+  return context
+}

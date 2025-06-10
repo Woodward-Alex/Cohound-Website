@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 42 100% 67%; /* CoHound Gold */
+    --primary-foreground: 240 10% 3.9%; /* Dark Gray for text on gold */
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 42 100% 67%; /* CoHound Gold for focus rings */
+    --radius: 0.5rem;
+    --font-size-modifier: 100%;
+    --contrast-modifier: 100%;
+  }
+
+  /* Removed .dark class styles */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    font-size: calc(16px * var(--font-size-modifier, 100%) / 100%);
+  }
+
+  img,
+  svg,
+  video {
+    filter: contrast(var(--contrast-modifier, 100%));
+  }
+}
+
+/* Removed .high-contrast and .dark.high-contrast styles as they depend on dark mode */
+
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md;
+}

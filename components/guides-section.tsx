@@ -169,7 +169,7 @@ export function GuidesSection() {
                     <Badge className="mb-2">Events</Badge>
                     <h3 className="text-xl font-bold">DisABILITY</h3>
                     <p className="mt-2 text-sm text-muted-foreground">
-                      Events, meetups & sharing your experiences with dogs that thrive with disABILITY.
+                      Events, meetups & sharing your experiences for dogs that thrive with their disABILITY.
                     </p>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">

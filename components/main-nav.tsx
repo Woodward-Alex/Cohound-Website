@@ -23,16 +23,16 @@ export function MainNav() {
             <span className="font-bold text-xl">Cohound</span>
           </Link>
           <nav className="hidden gap-6 md:flex items-center">
-            <Link href="#features" className="text-sm font-medium transition-colors hover:text-primary">
+            <Link href="/#features" className="text-sm font-medium transition-colors hover:text-primary">
               Features
             </Link>
-            <Link href="#map" className="text-sm font-medium transition-colors hover:text-primary">
+            <Link href="/#map" className="text-sm font-medium transition-colors hover:text-primary">
               Find Places
             </Link>
-            <Link href="#community" className="text-sm font-medium transition-colors hover:text-primary">
+            <Link href="/#community" className="text-sm font-medium transition-colors hover:text-primary">
               Community
             </Link>
-            <Link href="#download" className="text-sm font-medium transition-colors hover:text-primary">
+            <Link href="/#download" className="text-sm font-medium transition-colors hover:text-primary">
               Download
             </Link>
                <Button

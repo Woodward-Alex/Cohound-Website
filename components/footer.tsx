@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -145,16 +148,16 @@ export function Footer() {
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Cohound. All rights reserved.</p>
             <nav className="flex gap-4">
-              <Link href="#" className="text-sm text-muted-foreground hover:underline">
+              <Link href="/privacy-policy#cookies" className="text-sm text-muted-foreground hover:underline">
                 Privacy Policy
               </Link>
-              <Link href="#" className="text-sm text-muted-foreground hover:underline">
+              <Link href="/privacy-policy#cookies" className="text-sm text-muted-foreground hover:underline">
                 Terms of Service
               </Link>
-               <Link href="#" className="text-sm text-muted-foreground hover:underline">
+               <Link href="/privacy-policy#cookies" className="text-sm text-muted-foreground hover:underline">
                 Contact & Support
               </Link>
-              <Link href="#" className="text-sm text-muted-foreground hover:underline">
+              <Link href="/privacy-policy#cookies" className="text-sm text-muted-foreground hover:underline">
                 Cookie Policy
               </Link>
             </nav>

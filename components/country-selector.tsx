@@ -9,8 +9,7 @@ interface CountrySelectorProps {
 
 export function CountrySelector({ value, onValueChange }: CountrySelectorProps) {
   return (
-    <select 
-      value={value}
+    <select value={value}
       onChange={(e) => onValueChange(e.target.value)}
       className="w-full p-2 border rounded"
     >

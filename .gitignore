@@ -23,3 +23,7 @@ npm-debug.log*
 
 # TypeScript build info
 *.tsbuildinfo
+
+#git add .
+#git commit -m "your message"
+#git push origin main

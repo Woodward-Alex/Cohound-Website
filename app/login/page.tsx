@@ -20,6 +20,8 @@ import { FirebaseWarning } from "@/components/firebase-warning"
 import { Loader2 } from "lucide-react"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner" // Added
 
+export const dynamic = 'force-dynamic' // Disable static generation
+
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",

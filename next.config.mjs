@@ -10,7 +10,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Disable static generation for auth pages
+  experimental: {
+  },
   allowedDevOrigins: ['192.168.0.69'] // Moved inside nextConfig
 }
-
 export default nextConfig

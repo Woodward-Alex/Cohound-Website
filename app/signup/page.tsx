@@ -22,6 +22,8 @@ import { FirebaseWarning } from "@/components/firebase-warning"
 import { Loader2 } from "lucide-react"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner" 
 
+export const dynamic = 'force-dynamic' // Disable static generation
+
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -80,9 +82,13 @@ export default function SignUpPage() {
     e.preventDefault()
 
     if (!firebaseConfigured || !auth) {
-      setError("Authentication is not configured. Please contact support.")
-      return
-    }
+     return (
+    <div className="p-6">
+      <FirebaseWarning />
+    </div>
+  )
+}
+
 
     const validationError = validateForm()
     if (validationError) {

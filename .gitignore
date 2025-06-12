@@ -27,3 +27,5 @@ npm-debug.log*
 #git add .
 #git commit -m "your message"
 #git push origin main
+#npm run build
+#firebase deploy

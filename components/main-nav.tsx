@@ -2,7 +2,6 @@
 import Link from "next/link"
 import { Logo } from "@/components/logo"
 import { Button } from "@/components/ui/button"
-import { AccessibilityMenu } from "@/components/accessibility-menu"
 import { Badge } from "@/components/ui/badge"
 import { MobileNav } from "@/components/mobile-nav"   
 import { useChatbot} from "@/components/chatbot-context"

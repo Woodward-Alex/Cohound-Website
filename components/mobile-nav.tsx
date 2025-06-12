@@ -1,10 +1,15 @@
-import { Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import Link from "next/link"
-import { Logo } from "@/components/logo"
-import { AccessibilityMenu } from "@/components/accessibility-menu"
-import { Badge } from "@/components/ui/badge"
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import Link from "next/link";
+import { Logo } from "@/components/logo";
+import { Badge } from "@/components/ui/badge";
 
 export function MobileNav() {
   return (
@@ -22,8 +27,16 @@ export function MobileNav() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right">
+            {/* ✅ Accessibility fix: Add visually hidden title */}
+            <SheetTitle>
+              <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>
+            </SheetTitle>
+
             <div className="grid gap-6 py-6">
-              <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+              <Link
+                href="/"
+                className="flex items-center gap-2 text-lg font-semibold"
+              >
                 <Logo iconOnly height={24} width={24} />
                 <span>Cohound</span>
               </Link>
@@ -40,9 +53,15 @@ export function MobileNav() {
                 <Link href="#download" className="text-sm font-medium">
                   Download
                 </Link>
-                <Link href="#chatbot" className="text-sm font-medium flex items-center gap-1.5">
+                <Link
+                  href="#chatbot"
+                  className="text-sm font-medium flex items-center gap-1.5"
+                >
                   Cohound Chatbot{" "}
-                  <Badge variant="outline" className="bg-primary/20 text-primary px-1.5 py-0.5 text-xs">
+                  <Badge
+                    variant="outline"
+                    className="bg-primary/20 text-primary px-1.5 py-0.5 text-xs"
+                  >
                     New
                   </Badge>
                 </Link>
@@ -60,5 +79,5 @@ export function MobileNav() {
         </Sheet>
       </div>
     </div>
-  )
+  );
 }

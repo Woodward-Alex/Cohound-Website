@@ -47,8 +47,14 @@
   svg,
   video {
     filter: contrast(var(--contrast-modifier, 100%));
+    max-width: 100%;
+    height: auto;
   }
-}
+  /* Smooth scaling for all images */
+.next-image-wrapper {
+  display: flex !important;
+}   
+} 
 
 /* Removed .high-contrast and .dark.high-contrast styles as they depend on dark mode */
 

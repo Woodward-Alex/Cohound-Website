@@ -26,7 +26,7 @@ export function MobileNav() {
               <span className="sr-only">Toggle menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm">
             {/* ✅ Accessibility fix: Add visually hidden title */}
             <SheetTitle>
               <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>

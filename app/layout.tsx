@@ -2,11 +2,8 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider" // Removed ThemeProvider
 import { ChatbotProvider } from "@/components/chatbot-context"
 import { ChatbotPopup } from "@/components/chatbot-popup"
-import { MainNav } from "@/components/main-nav"
-import { MobileNav } from "@/components/mobile-nav"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -41,7 +38,7 @@ export default function RootLayout({
     // <html lang="en" suppressHydrationWarning> // Removed suppressHydrationWarning
     <html lang="en">
       <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cove, maximum-scale=1, user-scalable=no" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       <link rel="apple-touch-startup-image" href="/splash-screen.png" />

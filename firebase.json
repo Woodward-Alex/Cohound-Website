@@ -9,7 +9,7 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "source": ".",
         "destination": "/index.html"
       }
     ],
@@ -24,5 +24,15 @@
         ]
       }
     ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 5002
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
+
 }

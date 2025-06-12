@@ -87,7 +87,7 @@ export default function LoginPage() {
 
     setTimeout(() => {
       setLoading(false)
-      alert("Demo mode: Login successful! In a real app, this would authenticate you.")
+      alert("Login successful!.")
       router.push("/")
     }, 1000)
   }
@@ -112,7 +112,7 @@ export default function LoginPage() {
             <Logo height={150} width={75} />
           </div>
           <CardTitle className="text-2xl">Welcome back</CardTitle>
-          <CardDescription>Enter your email and password to sign in to your account</CardDescription>
+          <CardDescription>Enter your email and password to sign in to your account and donwload the app.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {!firebaseConfigured && <FirebaseWarning />}

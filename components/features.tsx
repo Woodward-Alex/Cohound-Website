@@ -23,7 +23,7 @@ export function Features() {
               <div className="space-y-1">
                 <h3 className="text-xl font-bold">Find Dog-Friendly Spaces</h3>
                 <p className="text-muted-foreground">
-                  Discover new places to go with your dog. From parks, restaurants, workplaces, housing, and shops. Through integrated maps, tailored filtering & comprehensive listings.
+                Discover the best parks, restaurants, workplaces, housing, and shops that welcome your furry friend. With interactive google maps, smart tailored filters, and real-time notifications.
                 </p>
               </div>
             </div>
@@ -69,7 +69,7 @@ export function Features() {
               <div className="space-y-1">
                 <h3 className="text-xl font-bold">Dog Matchmaking</h3>
                 <p className="text-muted-foreground">
-                  Match your dog with others nearby for walks, playdates, or meetups with tailored compatibility.
+                  Match your dog with others nearby for walks, playdates or sitting-swaps with tailored compatibility.
                 </p>
               </div>
             </div>

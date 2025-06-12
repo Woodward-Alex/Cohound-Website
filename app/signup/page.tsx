@@ -179,7 +179,7 @@ export default function SignUpPage() {
             <Logo height={150} width={75} />
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>Enter your details below to create your CoHound account</CardDescription>
+          <CardDescription>Enter your details below to create your Cohound account and get the app.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {!firebaseConfigured && <FirebaseWarning />}

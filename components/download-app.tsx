@@ -32,7 +32,7 @@ export function DownloadApp() {
             </div>
             <div className="flex flex-col gap-10 min-[400px]:flex-row justify-center">
               <Button asChild size="lg" className="gap-2">
-                <Link href="#">
+                <Link href="./signup">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -52,7 +52,7 @@ export function DownloadApp() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="gap-2">
-                <Link href="#">
+                <Link href="./signup">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

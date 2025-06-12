@@ -17,8 +17,8 @@ export function MainNav() {
       </a>
 
       <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-6 md:gap-10">
-          <Link href="/" className="hidden items-center space-x-2 md:flex">
+        <div className="flex items-center gap-6 md:gap-12">
+          <Link href="/" className="hidden items-center space-x-4 md:flex">
             <Logo height={40} width={40} iconOnly />
             <span className="font-bold text-xl">Cohound</span>
           </Link>
@@ -39,8 +39,8 @@ export function MainNav() {
                 onClick={() => setIsOpen(true)}
                 className="text-sm font-medium transition-colors hover:text-primary"
                 variant="Link">
-                 Cohound Chatbot{" "}
-                <Badge variant="outline" className="bg-primary/20 text-primary px-1.5 py-0.5 text-xs">
+                Cohound Chatbot{" "}
+                <Badge variant="outline" className="bg-primary/10 text-primary px-1.5 py-05 text-xs">
                  New
                 </Badge>
                 </Button>            

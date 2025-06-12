@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Dog, Send, User, X } from "lucide-react"
 import { Logo } from "./logo"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 interface ChatbotProps {
   onClose: () => void
@@ -18,20 +18,22 @@ export function Chatbot({ onClose }: ChatbotProps) {
   const { messages, input, handleInputChange, handleSubmit, isLoading, setMessages } = useChat({
     api: "/api/chat",
   })
-  const [isThinking, setIsThinking] = useState(false)
+
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
+    // Scroll to bottom when new messages are added
     if (scrollAreaRef.current) {
-      const scrollableView = scrollAreaRef.current.querySelector("div > div")
+      const scrollableView = scrollAreaRef.current.querySelector("div > div") // Target the viewport div
       if (scrollableView) {
         scrollableView.scrollTop = scrollableView.scrollHeight
       }
     }
-  }, [messages, isThinking])
+  }, [messages])
 
   useEffect(() => {
+    // Focus input when chatbot opens
     inputRef.current?.focus()
   }, [])
 
@@ -41,61 +43,18 @@ export function Chatbot({ onClose }: ChatbotProps) {
     "What companies allow me to bring my puppy to work?",
   ]
 
-  const handleSubmitWithAutoResponse = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    
-    // Add user's message immediately
-    const userMessage = {
-      id: Date.now().toString(),
-      role: "user" as const,
-      content: input
-    }
-    setMessages([...messages, userMessage])
-    
-    // Clear input
-    handleInputChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
-    
-    // Show thinking indicator
-    setIsThinking(true)
-    
-    // Wait for 2 seconds to simulate thinking
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Add auto-response
-    const autoResponse = {
-      id: (Date.now() + 1).toString(),
-      role: "assistant" as const,
-      content: "Check out places in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a>"
-    }
-    
-    setMessages(prev => [...prev, autoResponse])
-    setIsThinking(false)
-  }
-
-  const handleExamplePrompt = async (prompt: string) => {
-    // Add user's message immediately
-    const userMessage = {
-      id: Date.now().toString(),
-      role: "user" as const,
-      content: prompt
-    }
-    setMessages([...messages, userMessage])
-    
-    // Show thinking indicator
-    setIsThinking(true)
-    
-    // Wait for 2 seconds to simulate thinking
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    
-    // Add auto-response
-    const autoResponse = {
-      id: (Date.now() + 1).toString(),
-      role: "assistant" as const,
-      content: "Check out places in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a>"
-    }
-    
-    setMessages(prev => [...prev, autoResponse])
-    setIsThinking(false)
+  const handleExamplePrompt = (prompt: string) => {
+    // Simulate user typing and submitting the prompt
+    setMessages([...messages, { id: Date.now().toString(), role: "user", content: prompt }])
+    // Manually trigger submission with the example prompt
+    const syntheticEvent = { preventDefault: () => {} } as React.FormEvent<HTMLFormElement>
+    handleSubmit(syntheticEvent, {
+      options: {
+        body: {
+          messages: [...messages, { id: Date.now().toString(), role: "user", content: prompt }],
+        },
+      },
+    })
   }
 
   return (
@@ -104,8 +63,8 @@ export function Chatbot({ onClose }: ChatbotProps) {
         <div className="flex items-center gap-2">
           <Logo iconOnlyWhite width={40} height={40} />
           <div>
-            <h3 className="font-semibold text-sm">Cohound AI Assistant</h3>
-            <p className="text-xs opacity-80">Powered by OpenAI • Always Free</p>
+            <h3 className="font-semibold text-sm">Cohound AI Assistant </h3>
+            <p className="text-xs opacity-80">Powered by OpenAI • Always Free </p>
           </div>
         </div>
         <Button
@@ -129,7 +88,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
                 </AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-semibold">Hi! I'm your Cohound AI assistant! 👋</p>
+                <p className="font-semibold">Hi! I'm your Cohound AI assistant! 👋 </p>
                 <p>
                   I can help you with dog care questions, find pet-friendly places, and connect you with other dog
                   owners. What would you like to know?
@@ -146,16 +105,15 @@ export function Chatbot({ onClose }: ChatbotProps) {
                   </AvatarFallback>
                 </Avatar>
               )}
-              {m.role === "assistant" ? (
-                <div
-                  className="p-3 rounded-lg max-w-[80%] bg-muted text-muted-foreground rounded-bl-none"
-                  dangerouslySetInnerHTML={{ __html: m.content }}
-                />
-              ) : (
-                <div className="p-3 rounded-lg max-w-[80%] bg-primary text-primary-foreground rounded-br-none">
-                  {m.content}
-                </div>
-              )}
+              <div
+                className={`p-3 rounded-lg max-w-[80%] ${
+                  m.role === "user"
+                    ? "bg-primary text-primary-foreground rounded-br-none"
+                    : "bg-muted text-muted-foreground rounded-bl-none"
+                }`}
+              >
+                {m.content}
+              </div>
               {m.role === "user" && (
                 <Avatar className="h-8 w-8 border bg-background">
                   <AvatarFallback>
@@ -165,7 +123,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
               )}
             </div>
           ))}
-          {isThinking && (
+          {isLoading && messages.length > 0 && messages[messages.length - 1].role === "user" && (
             <div className="flex gap-3 text-sm">
               <Avatar className="h-8 w-8 border bg-background">
                 <AvatarFallback>
@@ -175,8 +133,9 @@ export function Chatbot({ onClose }: ChatbotProps) {
               <div className="p-3 rounded-lg bg-muted text-muted-foreground rounded-bl-none animate-pulse">
                 Thinking...
               </div>
-            </div>
-          )}
+          </div>
+          )
+          }
         </div>
       </ScrollArea>
 
@@ -191,7 +150,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
                 size="sm"
                 className="w-full justify-start text-left h-auto py-1.5"
                 onClick={() => handleExamplePrompt(prompt)}
-                disabled={isLoading || isThinking}
+                disabled={isLoading}
               >
                 {prompt}
               </Button>
@@ -200,22 +159,22 @@ export function Chatbot({ onClose }: ChatbotProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmitWithAutoResponse} className="border-t p-4 flex items-center gap-2">
+      <form onSubmit={handleSubmit} className="border-t p-4 flex items-center gap-2">
         <Input
           ref={inputRef}
           value={input}
           onChange={handleInputChange}
           placeholder="Ask me anything about dogs..."
           className="flex-1"
-          disabled={isLoading || isThinking}
+          disabled={isLoading}
         />
-        <Button type="submit" size="icon" disabled={isLoading || isThinking || !input.trim()}>
+        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
           <Send size={18} />
           <span className="sr-only">Send message</span>
         </Button>
       </form>
       <footer className="text-center text-xs text-muted-foreground p-2 border-t bg-muted/50 rounded-b-lg">
-        <p>Download the app for the full experience</p>
+      <p>Download the app for the full experience</p>
       </footer>
     </div>
   )

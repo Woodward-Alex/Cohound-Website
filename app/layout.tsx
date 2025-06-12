@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   title: "Cohound",
   description: "Connect with dog-friendly spaces, services, and pet owners in your community.",
   manifest: "/manifest.json",
-  themeColor: "#FFC857", // This will be the consistent theme color
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

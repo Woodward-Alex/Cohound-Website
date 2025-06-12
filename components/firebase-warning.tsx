@@ -4,8 +4,8 @@ export function FirebaseWarning() {
   return (
     <Alert variant="destructive">
       <AlertDescription>
-        Firebase is not configured. Please check your environment variables.
+        Looks like we are having trouble authenticating you at this time. Please email contact@cohound.com for further support.
       </AlertDescription>
-    </Alert>
-  )
+      </Alert>
+      )
 }

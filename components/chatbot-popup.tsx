@@ -30,7 +30,7 @@ export function ChatbotPopup() {
           className="fixed bottom-4 right-4 h-14 w-14 rounded-full shadow-lg z-40 bg-primary hover:bg-primary/90 text-primary-foreground"
           aria-label="Open AI Assistant"
         >
-          <Sparkles size={28} />
+          <Sparkles size={30} />
         </Button>
       )}
     </>

@@ -38,7 +38,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
   const examplePrompts = [
     "Find bike free parks near me",
     "Help with reactive dog training",
-    "What companies allow me to bring my puppy to work?",
+    "Give me a list of companies that allow me to bring my puppy to work?",
   ]
 
   const handleSubmitWithAutoResponse = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,7 +65,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
     const autoResponse = {
       id: (Date.now() + 1).toString(),
       role: "assistant" as const,
-      content: "Check out places in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a>"
+      content: "Check out the list in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a> or <a href='/login' class='text-primary underline'> Log In</a> "
     }
     
     setMessages(prev => [...prev, autoResponse])
@@ -91,7 +91,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
     const autoResponse = {
       id: (Date.now() + 1).toString(),
       role: "assistant" as const,
-      content: "Check out places in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a>"
+      content: "Check out the list in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a> or <a href='/login' class='text-primary underline'> Log In</a> "
     }
     
     setMessages(prev => [...prev, autoResponse])
@@ -99,24 +99,26 @@ export function Chatbot({ onClose }: ChatbotProps) {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-full max-w-md h-[70vh] max-h-[600px] bg-card shadow-xl rounded-lg flex flex-col border z-50">
-      <header className="bg-primary text-primary-foreground p-4 rounded-t-lg flex items-center justify-between">
+    <div className="fixed bottom-4 rightt-4 right-4 w-[calc(100%-2rem)] max-w-md h-[78vh] max-h-[700px] bg-card shadow-xl rounded-lg flex flex-col border z-50">
+      <header className="bg-primary text-primary-foreground p-4 rounded-t-lg flex items-center">
         <div className="flex items-center gap-2">
-          <Logo iconOnlyWhite width={40} height={40} />
+          <Logo iconOnlyWhite/>
           <div>
             <h3 className="font-semibold text-sm">Cohound AI Assistant</h3>
             <p className="text-xs opacity-80">Powered by OpenAI • Always Free</p>
           </div>
         </div>
+        <div className="ml-auto">
         <Button
           variant="ghost"
           size="icon"
           onClick={onClose}
-          className="text-primary-foreground hover:bg-primary/80 h-8 w-8"
+          className="text-primary-foreground hover:bg-primary/80 h-9 w-9 rounded-full -mr-2 sm:-mr-2"
         >
           <X size={18} />
-          <span className="sr-only">Close chat</span>
+          <span className="sr-only ">Close chat</span>
         </Button>
+        </div>
       </header>
 
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
@@ -181,15 +183,15 @@ export function Chatbot({ onClose }: ChatbotProps) {
       </ScrollArea>
 
       {messages.length <= 1 && (
-        <div className="p-4 border-t">
-          <p className="text-xs text-muted-foreground mb-2">Try asking about:</p>
-          <div className="space-y-2">
+        <div className="p-4 border-t overflow-hidden">
+          <p className="text-xs text-muted-foreground mb-2 truncate">Try asking about:</p>
+          <div className="space-y-2 overflow-y-auto max-h-[200px]">
             {examplePrompts.map((prompt) => (
               <Button
                 key={prompt}
                 variant="outline"
                 size="sm"
-                className="w-full justify-start text-left h-auto py-1.5"
+                className="w-full justify-start text-left h-auto py-1.5 whitespace-normal break-words"
                 onClick={() => handleExamplePrompt(prompt)}
                 disabled={isLoading || isThinking}
               >

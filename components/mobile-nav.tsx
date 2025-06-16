@@ -5,6 +5,7 @@ import {
   SheetContent,
   SheetTrigger,
   SheetTitle,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Link from "next/link";
@@ -13,26 +14,21 @@ import { Badge } from "@/components/ui/badge";
 
 export function MobileNav() {
   return (
-    <div className="flex w-full items-center justify-between md:hidden">
-      <Link href="/" className="flex items-center space-x-2">
-        <Logo iconOnly height={32} width={32} />
-        <span className="font-bold text-lg">Cohound</span>
-      </Link>
-      <div className="flex items-center gap-2">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm">
-            {/* ✅ Accessibility fix: Add visually hidden title */}
-            <SheetTitle>
-              <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>
-            </SheetTitle>
+    <div className="md:hidden">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="md:hidden">
+            <Menu className="h-6 w-6" />
+            <span className="sr-only">Toggle menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="right" className="w-full max-w-xs sm:max-w-sm">
+          <SheetTitle>
+            <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>
+          </SheetTitle>
 
-            <div className="grid gap-6 py-6">
+          <div className="grid gap-6 py-6">
+            <SheetClose asChild>
               <Link
                 href="/"
                 className="flex items-center gap-2 text-lg font-semibold"
@@ -40,19 +36,30 @@ export function MobileNav() {
                 <Logo iconOnly height={24} width={24} />
                 <span>Cohound</span>
               </Link>
-              <div className="grid gap-4">
+            </SheetClose>
+
+            <div className="grid gap-4">
+              <SheetClose asChild>
                 <Link href="#features" className="text-sm font-medium">
                   Features
                 </Link>
+              </SheetClose>
+              <SheetClose asChild>
                 <Link href="#map" className="text-sm font-medium">
                   Find Places
                 </Link>
+              </SheetClose>
+              <SheetClose asChild>
                 <Link href="#community" className="text-sm font-medium">
                   Community
                 </Link>
+              </SheetClose>
+              <SheetClose asChild>
                 <Link href="#download" className="text-sm font-medium">
                   Download
                 </Link>
+              </SheetClose>
+              <SheetClose asChild>
                 <Link
                   href="#chatbot"
                   className="text-sm font-medium flex items-center gap-1.5"
@@ -65,19 +72,24 @@ export function MobileNav() {
                     New
                   </Badge>
                 </Link>
-              </div>
-              <div className="grid gap-2">
+              </SheetClose>
+            </div>
+
+            <div className="grid gap-2">
+              <SheetClose asChild>
                 <Button variant="outline" asChild className="w-full">
                   <Link href="/login">Log In</Link>
                 </Button>
+              </SheetClose>
+              <SheetClose asChild>
                 <Button asChild className="w-full">
                   <Link href="/signup">Sign Up</Link>
                 </Button>
-              </div>
+              </SheetClose>
             </div>
-          </SheetContent>
-        </Sheet>
-      </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

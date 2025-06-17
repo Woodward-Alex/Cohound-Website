@@ -97,6 +97,7 @@ export function Logo({
   }
 
 
+
   const logoSrc = "/logo-color.png" // Default to full color logo
   return (
     <Image

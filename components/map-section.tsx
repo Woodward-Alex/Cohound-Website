@@ -40,7 +40,7 @@ export function MapSection() {
                 </div>
               </div>
             </div>
-            <div className="relative h-[400px] w-full">
+            <div className="relative h-[400px] w-full max-w-screen-xl mx-auto w-full">
               <Image
                 src="/Maps.png?height=800&width=1200"
                 alt="Map showing dog-friendly locations"

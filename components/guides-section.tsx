@@ -160,7 +160,7 @@ export function GuidesSection() {
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
                     <Image
                       src="/disability.png?height=50&width=50"
-                      alt="Behavior problems"
+                      alt="Disability network"
                       fill
                       className="object-cover"
                     />
@@ -181,7 +181,7 @@ export function GuidesSection() {
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
                     <Image
                       src="/Running.png?height=200&width=300"
-                      alt="Mental health"
+                      alt="Running network"
                       fill
                       className="object-cover"
                     />

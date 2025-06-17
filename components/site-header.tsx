@@ -10,7 +10,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center">
        
         <Link href="/" className="flex items-center gap-2 mr-8">
-          <Logo iconOnly height={28} width={28} />
+          <Logo iconOnly height={30} width={30} />
           <span className="font-semibold">Cohound</span>
         </Link>
 

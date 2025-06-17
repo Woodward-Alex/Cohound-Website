@@ -39,7 +39,7 @@ export function Hero() {
               </Button>
             </div>
           </div>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center max-w-screen-xl mx-auto w-full">
             <div className="relative h-[500px] w-[500px] sm:h-[500px] sm:w-[1000px] lg:h-[550px] lg:w-[950px]">
               <Image
                 src="/LaughingPeople.png?height=800&width=900"
@@ -48,7 +48,6 @@ export function Hero() {
                 className="object-cover rounded-lg"
                 priority
               />
-              
             </div>
           </div>
         </div>

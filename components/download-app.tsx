@@ -9,7 +9,7 @@ export function DownloadApp() {
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_600px]">
           <div className="flex items-center justify-center">
-            <div className="relative h-[500px] w-[250px] sm:h-[600px] sm:w-[300px]">
+            <div className="relative h-[500px] w-[250px] sm:h-[600px] sm:w-[300px] max-w-screen-xl mx-auto w-full">
               <Image
                 src="/DownloadApp.png?height=1200&width=600"
                 alt="CoHound mobile app screenshot"

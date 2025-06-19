@@ -6,12 +6,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AlertTriangle } from "lucide-react"
 import { Logo } from "@/components/logo"
+import { useIOS } from "@/components/useIOS"
 
 export function Footer() {
+   const isIOS = useIOS()
   return (
-    <footer className="w-full border-t bg-background">
+   <footer className={`w-full border-t bg-background ${
+      isIOS ? 'pb-[env(safe-area-inset-bottom)]' : ''
+    }`}>
       <div className="container px-4 py-12 md:px-6 md:py-16 lg:py-20">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-12">
+        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
           <div className="flex flex-col gap-2">
             <Link href="/" className="flex items-center gap-2">
               <Logo iconOnly height={32} width={32} />
@@ -145,7 +149,7 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t pt-6">
-          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-2 sm:flex-row">
             <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} Cohound. All rights reserved.</p>
             <nav className="flex gap-4">
               <Link href="/privacy-policy#cookies" className="text-sm text-muted-foreground hover:underline">

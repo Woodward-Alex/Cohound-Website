@@ -24,61 +24,176 @@
     --input: 240 5.9% 90%;
     --ring: 42 100% 67%; /* CoHound Gold for focus rings */
     --radius: 0.5rem;
-    --font-size-modifier: 100%;
-    --contrast-modifier: 100%;
   }
-
-  /* Removed .dark class styles */
 }
 
 @layer base {
   * {
     @apply border-border;
+    -webkit-tap-highlight-color: transparent;
   }
+  
+  html {
+    height: 100%;
+    height: -webkit-fill-available;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    position: relative;
   }
 
-  html {
-    font-size: calc(16px * var(--font-size-modifier, 100%) / 100%);
-  }
-
-  img,
-  svg,
-  video {
-    filter: contrast(var(--contrast-modifier, 100%));
+  /* Improved image handling */
+  img, svg, video {
     max-width: 100%;
     height: auto;
+    display: block;
   }
-  /* Smooth scaling for all images */
-.next-image-wrapper {
-  display: flex !important;
-}   
-} 
-
-/* Removed .high-contrast and .dark.high-contrast styles as they depend on dark mode */
-
-.skip-to-content {
-  @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md;
+  
+  .next-image-wrapper {
+    display: flex !important;
+  }
 }
 
-/* iOS-specific fixes */
+/* iOS-specific enhancements */
 @supports (-webkit-touch-callout: none) {
-  html {
-    height: -webkit-fill-available;
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: translateZ(0);
+    -webkit-appearance: none;
+    border-radius: 0;
   }
+  
+  /* Fix iOS scroll behavior */
   body {
-    min-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+    overflow-scrolling: touch;
+  }
+  
+  /* Prevent iOS zoom on double-tap */
+  * {
+    touch-action: manipulation;
+  }
+  
+  /* Fix sticky positioning on iOS */
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/* Form input fixes */
+input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Container adjustments for safe areas - only apply to specific elements */
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(env(safe-area-inset-left), 1rem);
+  padding-right: max(env(safe-area-inset-right), 1rem);
+}
+
+/* iOS device specific styles - more targeted approach */
+.ios-device main {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.ios-device header {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Footer specific fixes */
+footer {
+  margin-bottom: 0;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Prevent iOS input zoom */
+@media screen and (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Fix for Safari's viewport units */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
     min-height: -webkit-fill-available;
   }
 }
 
-/* Prevent zoom on input focus */
-input, textarea, select {
-  font-size: 16px !important;
+/* PWA specific styles */
+@media all and (display-mode: standalone) {
+  body {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  /* Hide address bar space */
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Adjust footer for PWA mode */
+  footer {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
 }
 
-.container {
-  margin-left: auto;
-  margin-right: auto;
+/* Improve touch targets */
+button, 
+[role="button"], 
+input[type="submit"], 
+input[type="button"], 
+a {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Fix backdrop-filter on iOS */
+@supports (backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0)) {
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+}
+
+/* Remove excessive spacing between footer sections */
+.footer-grid {
+  gap: 2rem !important;
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    gap: 1.5rem !important;
+  }
 }

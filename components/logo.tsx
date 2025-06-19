@@ -29,7 +29,7 @@ export function Logo({
   iconOnlyBackground = false, 
   className = "", 
   width = 24,  // Default to a more standard size
-  height = 24 
+  height = 24, 
 }: LogoProps) {
   // Standard sizes for different variants
   const baseSize = iconOnlyWhite ? 24 : 32

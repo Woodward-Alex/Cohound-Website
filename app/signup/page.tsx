@@ -155,10 +155,6 @@ export default function SignUpPage() {
 
   return (
     <>
-      <a href="#main-content" className="skip-to-content">
-        Skip to content
-      </a>
-      
       <div className="flex min-h-screen flex-col">
         <SiteHeader />
         

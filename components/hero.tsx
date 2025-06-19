@@ -40,12 +40,14 @@ export function Hero() {
             </div>
           </div>
           <div className="flex items-center justify-center max-w-screen-xl mx-auto w-full">
-            <div className="relative h-[500px] w-[500px] sm:h-[500px] sm:w-[1000px] lg:h-[550px] lg:w-[950px]">
+            <div className="relative h-[500px] w-[500px] sm:h-[500px] sm:w-[1000px] lg:h-[550px] lg:w-[950px] object-cover">
               <Image
                 src="/LaughingPeople.png?height=800&width=900"
                 alt="Happy dog and owner at a park"
                 fill
                 className="object-cover rounded-lg"
+                loading="eager"
+                decoding="sync"
                 priority
               />
             </div>

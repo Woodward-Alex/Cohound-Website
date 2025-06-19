@@ -1,29 +1,108 @@
 {
-  "name": "CoHound - Tailored for your dog. Built for you.",
-  "short_name": "CoHound",
-  "description": "Connect with dog-friendly spaces, services, and pet owners in your community.",
+  "name": "Cohound - Tailored for your dog. Built for you.",
+  "short_name": "Cohound",
+  "description": "Where your dog's happiness meets convenience. Connect with dog-friendly spaces, services, and pet owners in your community.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#FFC857",
   "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "categories": ["lifestyle", "social", "pets"],
+  "lang": "en-US",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/favicon-color.png",
+      "src": "/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "/favicon-color.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
-      "src": "/favicon-color.png",
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/apple-touch-icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/apple-touch-icon-167x167.png",
+      "sizes": "167x167",
+      "type": "image/png",
+      "purpose": "any"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/iphone-screenshot1.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Cohound mobile app interface"
+    },
+    {
+      "src": "/screenshots/ipad-screenshot1.png",
+      "sizes": "2048x2732",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Cohound tablet interface"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Find Dog Places",
+      "short_name": "Find Places",
+      "description": "Quickly find dog-friendly locations nearby",
+      "url": "/#map",
+      "icons": [
+        {
+          "src": "/icons/shortcut-map.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Community",
+      "short_name": "Community",
+      "description": "Connect with other dog owners",
+      "url": "/#community",
+      "icons": [
+        {
+          "src": "/icons/shortcut-community.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 480
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }

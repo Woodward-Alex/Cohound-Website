@@ -1,3 +1,5 @@
+"use client";
+
 import { MobileNav } from "@/components/mobile-nav";
 import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
@@ -14,12 +16,17 @@ import { CookieConsentBanner } from "@/components/cookie-consent-banner";
 import Link from "next/link"; 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
+import { useIOS } from "@/components/useIOS";
 
 export default function Home() {
+  const isIOS = useIOS();
+
   return (
-    <div className="flex min-h-screen flex-col">
-      {/* Header with three sections */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <div className={`flex min-h-screen flex-col ${isIOS ? 'ios-device' : ''}`}>
+      {/* Header with iOS safe area padding */}
+      <header className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ${
+        isIOS ? 'pt-[env(safe-area-inset-top)]' : ''
+      }`}>
         <div className="container flex h-16 items-center">
           {/* Left: Logo */}
           <Link href="/" className="flex items-center gap-2 mr-8">
@@ -49,8 +56,13 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Main Content */}
-      <main id="main-content" className="flex-1 container px-4 sm:px-6 md:px-8">
+      {/* Main Content with iOS safe area padding */}
+      <main 
+        id="main-content" 
+        className={`flex-1 container px-4 sm:px-6 md:px-8 ${
+          isIOS ? 'pb-[env(safe-area-inset-bottom)]' : ''
+        }`}
+      >
         <Hero />
         <Features />
         <MapSection />
@@ -61,11 +73,16 @@ export default function Home() {
         <VolunteeringSection />
       </main>
 
-      {/* Footer */}
+      {/* Footer - iOS safe area handled inside Footer component */}
       <Footer />
 
-      {/* Floating Components */}
-      <ChatbotPopup />
+      {/* Floating Components with iOS adjustments */}
+      <div className={`fixed bottom-4 right-4 ${
+        isIOS ? 'mb-[env(safe-area-inset-bottom)]' : ''
+      }`}>
+        <ChatbotPopup />
+      </div>
+      
       <CookieConsentBanner />
     </div>
   );

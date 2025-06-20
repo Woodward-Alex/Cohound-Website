@@ -159,61 +159,67 @@ export function DogProfiles() {
                 <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/golden.png?height=30&width=30"
-                      alt="Golden Retriever"
-                      width={50}
-                      height={50}
-                      className="mr-2 rounded-full"
+                          src="/Golden.png"
+                          alt="Basic Commands"
+                          width={50}
+                          height={50}
+                          className="object-cover mr-2 rounded-full"
+                          sizes="(max-width: 768px) 50px, 50px"
                     />
                     Golden Retrievers
                   </Button>
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/german.png?height=30&width=30"
+                      src="/german.png"
                       alt="German Shepherd"
                       width={50}
                       height={50}
-                      className="mr-2 rounded-full"
+                      className="object-cover mr-2 rounded-full"
+                      sizes="(max-width: 768px) 50px, 50px"
                     />
                     German Shepherds
                   </Button>
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/labrador.png?height=30&width=30"
+                       src="/Labrador.png"
                       alt="Labrador"
                       width={50}
                       height={50}
-                      className="mr-2 rounded-full"
+                      className="object-cover mr-2 rounded-full"
+                      sizes="(max-width: 768px) 50px, 50px"
                     />
                     Labradors
                   </Button>
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/Frenchie.png?height=30&width=30"
-                      alt="French Bulldog"
+                      src="/Frenchie.png"
+                      alt="Frenchies"
                       width={50}
                       height={50}
-                      className="mr-2 rounded-full"
+                      className="object-cover mr-2 rounded-full"
+                      sizes="(max-width: 768px) 50px, 50px"
                     />
                     French Bulldogs
                   </Button>
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/collie.png?height=30&width=30"
+                       src="/Collie.png"
                       alt="Border Collie"
                       width={50}
                       height={50}
-                      className="mr-2 rounded-full"
+                      className="object-cover mr-2 rounded-full"
+                      sizes="(max-width: 768px) 50px, 50px"
                     />
                     Border Collies
                   </Button>
                   <Button variant="outline" className="justify-start">
                     <Image
-                      src="/Uknownbreed.png?height=30&width=30"
-                      alt="Beagle"
+                       src="/MixedBreed.png"
+                      alt="Mixed Breed"
                       width={50}
                       height={50}
-                      className="mr-2 rounded-full"
+                      className="object-cover mr-2 rounded-full"
+                      sizes="(max-width: 768px) 50px, 50px"
                     />
                     Mixed Breed
                   </Button>

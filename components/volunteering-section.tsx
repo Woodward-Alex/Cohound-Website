@@ -24,10 +24,10 @@ export function VolunteeringSection() {
                 <Card>
                   <CardContent className="p-4">
                     <div className="flex gap-4">
-                      
+        
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <Image
-                        src="/volunteer.png"
+                        src="/Volunteer.png"
                         alt="Shelter Support"
                         fill
                         className="object-cover"
@@ -52,7 +52,7 @@ export function VolunteeringSection() {
                     <div className="flex gap-4">
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <Image
-                        src="Foster.png"
+                        src="/Foster.png"
                         alt="Fostering"
                         fill
                         className="object-cover"
@@ -146,7 +146,6 @@ export function VolunteeringSection() {
                   alt="Charity spotlight"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 96px, 96px"
                 />
               </div>
               <div>

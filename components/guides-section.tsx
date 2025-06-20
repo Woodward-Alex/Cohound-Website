@@ -131,10 +131,11 @@ export function GuidesSection() {
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
                     <Image
-                      src="/leash.png?height=200&width=300"
-                      alt="Leash training"
-                      fill
-                      className="object-cover"
+                          src="/Leash.png"
+                          alt="leash training"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
                     />
                   </div>
                   <CardContent className="p-4">

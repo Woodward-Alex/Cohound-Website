@@ -24,11 +24,23 @@ export function DogProfiles() {
 
         <div className="mx-auto max-w-5xl py-8">
           <Tabs defaultValue="profiles" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="profiles">Sample Profiles</TabsTrigger>
-              <TabsTrigger value="breeds">Breed Matching</TabsTrigger>
-              <TabsTrigger value="temperament">Temperament</TabsTrigger>
-              <TabsTrigger value="dogswap">Dog Swap</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="profiles">
+                <span className="hidden sm:inline">Sample Profiles</span>
+                <span className="sm:hidden">Profiles</span>
+              </TabsTrigger>
+              <TabsTrigger value="breeds">
+                <span className="hidden sm:inline">Breed Matching</span>
+                <span className="sm:hidden">Breeds</span>
+              </TabsTrigger>
+              <TabsTrigger value="temperament">
+                <span className="hidden sm:inline">Temperament</span>
+                <span className="sm:hidden">Temper</span>
+              </TabsTrigger>
+              <TabsTrigger value="dogswap">
+                <span className="hidden sm:inline">Dog Swap</span>
+                <span className="sm:hidden">Swap</span>
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="profiles" className="mt-6">

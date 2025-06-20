@@ -2,6 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useChatbot } from "@/components/chatbot-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,14 +20,27 @@ import { Badge } from "@/components/ui/badge";
 export function MobileNav() {
   const { setIsOpen } = useChatbot();
   const router = useRouter();
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const goToSection = (section: string) => {
-    router.push(`/#${section}`);
+    // Close the sheet first
+    setSheetOpen(false);
+    // Small delay to ensure sheet closes before navigation
+    setTimeout(() => {
+      router.push(`/#${section}`);
+    }, 100);
+  };
+
+  const handleChatbotOpen = () => {
+    setSheetOpen(false);
+    setTimeout(() => {
+      setIsOpen(true);
+    }, 100);
   };
 
   return (
     <div className="md:hidden">
-      <Sheet>
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-6 w-6" />
@@ -39,76 +53,65 @@ export function MobileNav() {
           </SheetTitle>
 
           <div className="grid gap-6 py-6">
-            <SheetClose asChild>
-              <Link
-                href="/"
-                className="flex items-center gap-2 text-lg font-semibold"
-              >
-                <Logo iconOnly height={24} width={24} />
-                <span>Cohound</span>
-              </Link>
-            </SheetClose>
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-lg font-semibold"
+              onClick={() => setSheetOpen(false)}
+            >
+              <Logo iconOnly height={24} width={24} />
+              <span>Cohound</span>
+            </Link>
 
             <div className="grid gap-4">
-              <SheetClose asChild>
-                <button
-                  onClick={() => goToSection("features")}
-                  className="text-sm font-medium text-left"
+              <button
+                onClick={() => goToSection("features")}
+                className="text-sm font-medium text-left hover:text-primary transition-colors"
+              >
+                Features
+              </button>
+              <button
+                onClick={() => goToSection("map")}
+                className="text-sm font-medium text-left hover:text-primary transition-colors"
+              >
+                Find Places
+              </button>
+              <button
+                onClick={() => goToSection("community")}
+                className="text-sm font-medium text-left hover:text-primary transition-colors"
+              >
+                Community
+              </button>
+              <button
+                onClick={() => goToSection("download")}
+                className="text-sm font-medium text-left hover:text-primary transition-colors"
+              >
+                Download
+              </button>
+              <button
+                onClick={handleChatbotOpen}
+                className="text-sm font-medium flex items-center gap-1.5 w-full text-left hover:text-primary transition-colors"
+              >
+                Cohound Chatbot
+                <Badge
+                  variant="outline"
+                  className="bg-primary/20 text-primary px-1.5 py-0.5 text-xs"
                 >
-                  Features
-                </button>
-              </SheetClose>
-              <SheetClose asChild>
-                <button
-                  onClick={() => goToSection("map")}
-                  className="text-sm font-medium text-left"
-                >
-                  Find Places
-                </button>
-              </SheetClose>
-              <SheetClose asChild>
-                <button
-                  onClick={() => goToSection("community")}
-                  className="text-sm font-medium text-left"
-                >
-                  Community
-                </button>
-              </SheetClose>
-              <SheetClose asChild>
-                <button
-                  onClick={() => goToSection("download")}
-                  className="text-sm font-medium text-left"
-                >
-                  Download
-                </button>
-              </SheetClose>
-              <SheetClose asChild>
-                <button
-                  onClick={() => setIsOpen(true)}
-                  className="text-sm font-medium flex items-center gap-1.5 w-full text-left"
-                >
-                  Cohound Chatbot
-                  <Badge
-                    variant="outline"
-                    className="bg-primary/20 text-primary px-1.5 py-0.5 text-xs"
-                  >
-                    New
-                  </Badge>
-                </button>
-              </SheetClose>
+                  New
+                </Badge>
+              </button>
             </div>
 
             <div className="grid gap-2">
-              <SheetClose asChild>
-                <Button variant="outline" asChild className="w-full">
-                  <Link href="/login">Log In</Link>
-                </Button>
-              </SheetClose>
-              <SheetClose asChild>
-                <Button asChild className="w-full">
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </SheetClose>
+              <Button variant="outline" asChild className="w-full">
+                <Link href="/login" onClick={() => setSheetOpen(false)}>
+                  Log In
+                </Link>
+              </Button>
+              <Button asChild className="w-full">
+                <Link href="/signup" onClick={() => setSheetOpen(false)}>
+                  Sign Up
+                </Link>
+              </Button>
             </div>
           </div>
         </SheetContent>

@@ -20,21 +20,31 @@ export function GuidesSection() {
         <div className="mx-auto max-w-5xl py-8">
           <Tabs defaultValue="new-owners" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="new-owners">First-Time Owners</TabsTrigger>
-              <TabsTrigger value="training">Training Guides</TabsTrigger>
-              <TabsTrigger value="support">Owner Support</TabsTrigger>
+              <TabsTrigger value="new-owners">
+                <span className="hidden sm:inline">New Owners</span>
+                <span className="sm:hidden">New</span>
+              </TabsTrigger>
+              <TabsTrigger value="training">
+                <span className="hidden sm:inline">Training Guides</span>
+                <span className="sm:hidden">Training</span>
+              </TabsTrigger>
+              <TabsTrigger value="support">
+                <span className="hidden sm:inline"> Owner Support</span>
+                <span className="sm:hidden">Support</span>
+                  </TabsTrigger>
             </TabsList>
 
             <TabsContent value="new-owners" className="mt-6">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/First30.png?height=200&width=300"
-                      alt="Puppy care guide"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/First30.png"
+                          alt="Puppy care guide"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Beginner</Badge>
@@ -50,12 +60,13 @@ export function GuidesSection() {
 
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/Essentials.png?height=200&width=300"
-                      alt="Essential supplies"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Essentials.png"
+                          alt="Essentials Guide"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Essentials</Badge>
@@ -71,8 +82,14 @@ export function GuidesSection() {
 
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image src="/Vet.png?height=200&width=300" alt="Vet visits" fill className="object-cover" />
-                  </div>
+                     <Image
+                          src="/Vet.png"
+                          alt="Vets Guide"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
+                    </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Healthcare</Badge>
                     <h3 className="text-xl font-bold">First Vet Visits Guide</h3>
@@ -91,12 +108,13 @@ export function GuidesSection() {
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/Basic.png?height=200&width=300"
-                      alt="Basic commands"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Basic.png"
+                          alt="Basic Commands"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Basics</Badge>
@@ -133,12 +151,13 @@ export function GuidesSection() {
 
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/Reactive.png?height=200&width=300"
-                      alt="Reactive dog training"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Reactive.png"
+                          alt="Reactive Dog Training"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Specialized</Badge>
@@ -158,12 +177,13 @@ export function GuidesSection() {
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/disability.png?height=50&width=50"
-                      alt="Disability network"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Disability.png"
+                          alt="Disabled dogs network"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Events</Badge>
@@ -179,12 +199,13 @@ export function GuidesSection() {
 
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/Running.png?height=200&width=300"
-                      alt="Running network"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Running.png"
+                          alt="Sports & Agility Group"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Events</Badge>
@@ -200,12 +221,13 @@ export function GuidesSection() {
 
                 <Card>
                   <div className="relative aspect-video overflow-hidden rounded-t-lg">
-                    <Image
-                      src="/Community.png?height=200&width=300"
-                      alt="Owner support"
-                      fill
-                      className="object-cover"
-                    />
+                     <Image
+                          src="/Community.png"
+                          alt="Owner Support Network"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
+                      />
                   </div>
                   <CardContent className="p-4">
                     <Badge className="mb-2">Support</Badge>

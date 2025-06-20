@@ -27,11 +27,12 @@ export function VolunteeringSection() {
                       
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <Image
-                          src="/Volunteer.png?height=64&width=64"
-                          alt="Dog shelter"
-                          fill
-                          className="object-cover"
-                        />
+                        src="/volunteer.png"
+                        alt="Shelter Support"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 64px, 64px"
+                      />
                       </div>
                       <div>
                         <h4 className="font-semibold">Local Shelter Support</h4>
@@ -51,10 +52,11 @@ export function VolunteeringSection() {
                     <div className="flex gap-4">
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <Image
-                          src="/Foster.png?height=64&width=64"
-                          alt="Foster dog"
-                          fill
-                          className="object-cover"
+                        src="Foster.png"
+                        alt="Fostering"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 96px, 96px"
                         />
                       </div>
                       <div>
@@ -75,10 +77,11 @@ export function VolunteeringSection() {
                     <div className="flex gap-4">
                       <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                         <Image
-                          src="/Adopt.png?height=64&width=64"
-                          alt="Adoption event"
+                          src="/Adopt.png"
+                          alt="Adopting"
                           fill
                           className="object-cover"
+                          sizes="(max-width: 768px) 96px, 96px"
                         />
                       </div>
                       <div>
@@ -103,11 +106,12 @@ export function VolunteeringSection() {
               <Card className="overflow-hidden">
                 <div className="relative aspect-video">
                   <Image
-                    src="/Training.png?height=300&width=500"
-                    alt="Dog training volunteer"
-                    fill
-                    className="object-cover"
-                  />
+                  src="/Training.png"
+                  alt="Training Volunteer"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 96px, 96px"
+                />
                 </div>
                 <CardContent className="p-4">
                   <p className="text-sm text-muted-foreground">
@@ -138,10 +142,11 @@ export function VolunteeringSection() {
             <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left">
               <div className="relative mb-4 h-24 w-24 flex-shrink-0 overflow-hidden rounded-full md:mb-0 md:mr-6">
                 <Image
-                  src="/Favicon-Color.png?height=20&width=10"
+                  src="/Favicon-Color.png"
                   alt="Charity spotlight"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 96px, 96px"
                 />
               </div>
               <div>

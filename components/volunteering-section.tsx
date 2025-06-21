@@ -146,6 +146,7 @@ export function VolunteeringSection() {
                   alt="Charity spotlight"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 24px, 24px"
                 />
               </div>
               <div>

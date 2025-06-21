@@ -1,8 +1,8 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useChatbot } from "@/components/chatbot-context";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,25 +10,66 @@ import {
   SheetContent,
   SheetTrigger,
   SheetTitle,
-  SheetClose,
 } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Badge } from "@/components/ui/badge";
 
+// Custom hook for smooth scrolling to sections
+function useScrollToSection() {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const scrollToSection = (sectionId: string) => {
+    const scrollToElement = () => {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        // Add offset for fixed header if you have one
+        const headerOffset = 80; // Adjust this value based on your header height
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        return true;
+      }
+      return false;
+    };
+
+    if (pathname === '/') {
+      // Already on home page, just scroll
+      setTimeout(scrollToElement, 100);
+    } else {
+      // Navigate to home page first, then scroll
+      router.push('/');
+      // Wait for navigation to complete
+      const checkAndScroll = () => {
+        if (window.location.pathname === '/') {
+          scrollToElement();
+        } else {
+          setTimeout(checkAndScroll, 100);
+        }
+      };
+      setTimeout(checkAndScroll, 200);
+    }
+  };
+
+  return scrollToSection;
+}
+
 export function MobileNav() {
   const { setIsOpen } = useChatbot();
-  const router = useRouter();
+  const scrollToSection = useScrollToSection();
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const goToSection = (section: string) => {
-    // Close the sheet first
     setSheetOpen(false);
-    // Small delay to ensure sheet closes before navigation
     setTimeout(() => {
-      router.push(`/#${section}`);
-    }, 100);
+      scrollToSection(section);
+    }, 200);
   };
 
   const handleChatbotOpen = () => {
@@ -65,31 +106,31 @@ export function MobileNav() {
             <div className="grid gap-4">
               <button
                 onClick={() => goToSection("features")}
-                className="text-sm font-medium text-left hover:text-primary transition-colors"
+                className="text-sm font-medium text-left hover:text-primary transition-colors p-2 rounded hover:bg-accent"
               >
                 Features
               </button>
               <button
                 onClick={() => goToSection("map")}
-                className="text-sm font-medium text-left hover:text-primary transition-colors"
+                className="text-sm font-medium text-left hover:text-primary transition-colors p-2 rounded hover:bg-accent"
               >
                 Find Places
               </button>
               <button
                 onClick={() => goToSection("community")}
-                className="text-sm font-medium text-left hover:text-primary transition-colors"
+                className="text-sm font-medium text-left hover:text-primary transition-colors p-2 rounded hover:bg-accent"
               >
                 Community
               </button>
               <button
                 onClick={() => goToSection("download")}
-                className="text-sm font-medium text-left hover:text-primary transition-colors"
+                className="text-sm font-medium text-left hover:text-primary transition-colors p-2 rounded hover:bg-accent"
               >
                 Download
               </button>
               <button
                 onClick={handleChatbotOpen}
-                className="text-sm font-medium flex items-center gap-1.5 w-full text-left hover:text-primary transition-colors"
+                className="text-sm font-medium flex items-center gap-1.5 w-full text-left hover:text-primary transition-colors p-2 rounded hover:bg-accent"
               >
                 Cohound Chatbot
                 <Badge

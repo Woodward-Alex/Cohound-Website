@@ -10,9 +10,9 @@ export function GuidesSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Guides & Resources</h2>
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Guides, Resources & Networks</h2>
             <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-              Everything you need to be a confident and successful dog owner, from first-time tips to advanced training.
+              Everything you need to be a confident and successful dog owner, from sharing first-time tips to advanced training.
             </p>
           </div>
         </div>
@@ -29,8 +29,8 @@ export function GuidesSection() {
                 <span className="sm:hidden">Training</span>
               </TabsTrigger>
               <TabsTrigger value="support">
-                <span className="hidden sm:inline"> Owner Support</span>
-                <span className="sm:hidden">Support</span>
+                <span className="hidden sm:inline"> Networks & Support</span>
+                <span className="sm:hidden">Networks</span>
                   </TabsTrigger>
             </TabsList>
 

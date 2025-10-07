@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useChat } from "ai/react"
+import { useChat } from "@ai-sdk/react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -211,10 +211,14 @@ export function Chatbot({ onClose }: ChatbotProps) {
           className="flex-1"
           disabled={isLoading || isThinking}
         />
-        <Button type="submit" size="icon" disabled={isLoading || isThinking || !input.trim()}>
-          <Send size={18} />
-          <span className="sr-only">Send message</span>
-        </Button>
+        <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || isThinking || !(input ?? "").trim()}
+          >
+            <Send size={18} />
+            <span className="sr-only">Send message</span>
+          </Button>
       </form>
       <footer className="text-center text-xs text-muted-foreground p-2 border-t bg-muted/50 rounded-b-lg">
         <p>Download the app for the full experience</p>

@@ -1,84 +1,92 @@
-"use client";
+// components/mobile-nav.tsx
+"use client"
 
-import { Menu } from "lucide-react";
-import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { useChatbot } from "@/components/chatbot-context";
-import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react"
+import { useRouter, usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useChatbot } from "@/components/chatbot-context"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetTitle,
-} from "@/components/ui/sheet";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import Link from "next/link";
-import { Logo } from "@/components/logo";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/sheet"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import Link from "next/link"
+import { Logo } from "@/components/logo"
+import { Badge } from "@/components/ui/badge"
+import { useAuth } from "@/contexts/AuthContext"
 
 // Custom hook for smooth scrolling to sections
 function useScrollToSection() {
-  const router = useRouter();
-  const pathname = usePathname();
-
+  const router = useRouter()
+  const pathname = usePathname()
+ 
   const scrollToSection = (sectionId: string) => {
     const scrollToElement = () => {
-      const element = document.getElementById(sectionId);
+      const element = document.getElementById(sectionId)
       if (element) {
         // Add offset for fixed header if you have one
-        const headerOffset = 80; // Adjust this value based on your header height
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
+        const headerOffset = 80 // Adjust this value based on your header height
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+ 
         window.scrollTo({
           top: offsetPosition,
           behavior: 'smooth'
-        });
-        return true;
+        })
+        return true
       }
-      return false;
-    };
-
+      return false
+    }
+ 
     if (pathname === '/') {
       // Already on home page, just scroll
-      setTimeout(scrollToElement, 100);
+      setTimeout(scrollToElement, 100)
     } else {
       // Navigate to home page first, then scroll
-      router.push('/');
+      router.push('/')
       // Wait for navigation to complete
       const checkAndScroll = () => {
         if (window.location.pathname === '/') {
-          scrollToElement();
+          scrollToElement()
         } else {
-          setTimeout(checkAndScroll, 100);
+          setTimeout(checkAndScroll, 100)
         }
-      };
-      setTimeout(checkAndScroll, 200);
+      }
+      setTimeout(checkAndScroll, 200)
     }
-  };
-
-  return scrollToSection;
+  }
+ 
+  return scrollToSection
 }
 
 export function MobileNav() {
-  const { setIsOpen } = useChatbot();
-  const scrollToSection = useScrollToSection();
-  const [sheetOpen, setSheetOpen] = useState(false);
-
+  const { setIsOpen } = useChatbot()
+  const scrollToSection = useScrollToSection()
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const { isAuthenticated, signOut } = useAuth()
+ 
   const goToSection = (section: string) => {
-    setSheetOpen(false);
+    setSheetOpen(false)
     setTimeout(() => {
-      scrollToSection(section);
-    }, 200);
-  };
-
+      scrollToSection(section)
+    }, 200)
+  }
+ 
   const handleChatbotOpen = () => {
-    setSheetOpen(false);
+    setSheetOpen(false)
     setTimeout(() => {
-      setIsOpen(true);
-    }, 100);
-  };
+      setIsOpen(true)
+    }, 100)
+  }
 
+  const handleSignOut = async () => {
+    setSheetOpen(false)
+    await signOut()
+  }
+ 
   return (
     <div className="md:hidden">
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -92,7 +100,7 @@ export function MobileNav() {
           <SheetTitle>
             <VisuallyHidden>Mobile Navigation Menu</VisuallyHidden>
           </SheetTitle>
-
+ 
           <div className="grid gap-6 py-6">
             <Link
               href="/"
@@ -102,7 +110,7 @@ export function MobileNav() {
               <Logo iconOnly height={24} width={24} />
               <span>Cohound</span>
             </Link>
-
+ 
             <div className="grid gap-4">
               <button
                 onClick={() => goToSection("features")}
@@ -141,22 +149,41 @@ export function MobileNav() {
                 </Badge>
               </button>
             </div>
-
+ 
             <div className="grid gap-2">
-              <Button variant="outline" asChild className="w-full">
-                <Link href="/login" onClick={() => setSheetOpen(false)}>
-                  Log In
-                </Link>
-              </Button>
-              <Button asChild className="w-full">
-                <Link href="/signup" onClick={() => setSheetOpen(false)}>
-                  Sign Up
-                </Link>
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button variant="outline" asChild className="w-full">
+                    <Link href="/dashboard" onClick={() => setSheetOpen(false)}>
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full" 
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="outline" asChild className="w-full">
+                    <Link href="/login" onClick={() => setSheetOpen(false)}>
+                      Log In
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full">
+                    <Link href="/signup" onClick={() => setSheetOpen(false)}>
+                      Sign Up
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </SheetContent>
       </Sheet>
     </div>
-  );
+  )
 }

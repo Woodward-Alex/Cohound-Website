@@ -1,9 +1,11 @@
+// app/login/page.tsx
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect, Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth"
+import { useUser } from '@auth0/nextjs-auth0'
 import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,33 +15,61 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/logo"
 import { FirebaseWarning } from "@/components/firebase-warning"
-import { Loader2 } from "lucide-react"
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react"
 import { SiteHeader } from "@/components/site-header"
 import { Footer } from "@/components/footer"
 import { ChatbotPopup } from "@/components/chatbot-popup"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner"
+import { toast } from 'sonner'
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') || '/dashboard'
+  
   const firebaseConfigured = isFirebaseConfigured()
+  const { user: auth0User, error: auth0Error, isLoading: auth0Loading } = useUser()
+
+  // Handle Auth0 user
+  useEffect(() => {
+    if (auth0User && !auth0Loading) {
+      router.push(redirectTo)
+    }
+  }, [auth0User, auth0Loading, router, redirectTo])
+
+  const showNotification = (message: string, type: 'success' | 'error') => {
+    if (type === 'success') {
+      toast.success(message)
+      setSuccess(message)
+      setError("")
+    } else {
+      toast.error(message)
+      setError(message)
+      setSuccess("")
+    }
+    
+    // Clear notification after 5 seconds
+    setTimeout(() => {
+      setError("")
+      setSuccess("")
+    }, 5000)
+  }
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!firebaseConfigured || !auth) {
-      return (
-        <div className="p-6">
-          <FirebaseWarning />
-        </div>
-      )
+      showNotification("Authentication is not configured. Please contact support.", "error")
+      return
     }
 
     if (!email.trim() || !password) {
-      setError("Please enter both email and password")
+      showNotification("Please enter both email and password", "error")
       return
     }
 
@@ -47,10 +77,43 @@ export default function LoginPage() {
     setError("")
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
-      router.push("/dashboard")
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      const user = userCredential.user
+      const token = await user.getIdToken()
+      
+      showNotification("Login successful! Redirecting...", "success")
+      
+      // Store user data in MongoDB and set secure cookie
+      await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email, 
+          loginMethod: 'firebase',
+          firebaseUID: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          firebaseToken: token
+        }),
+      })
+      
+      // Set token in secure cookie
+      await fetch('/api/auth/set-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      })
+      
+      setTimeout(() => {
+        router.push(redirectTo)
+      }, 1500)
     } catch (error: any) {
-      setError(error.message || "Failed to login. Please check your credentials.")
+      const errorMessage = getFirebaseErrorMessage(error.code) || "Failed to login. Please check your credentials."
+      showNotification(errorMessage, "error")
     } finally {
       setLoading(false)
     }
@@ -58,7 +121,7 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     if (!firebaseConfigured || !auth || !googleProvider) {
-      setError("Authentication is not configured. Please contact support.")
+      showNotification("Authentication is not configured. Please contact support.", "error")
       return
     }
 
@@ -66,23 +129,101 @@ export default function LoginPage() {
     setError("")
 
     try {
-      await signInWithPopup(auth, googleProvider)
-      router.push("/dashboard")
+      const result = await signInWithPopup(auth, googleProvider)
+      const user = result.user
+      const token = await user.getIdToken()
+      
+      showNotification("Google login successful! Redirecting...", "success")
+      
+      // Store user data in MongoDB
+      await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: user.email, 
+          loginMethod: 'google',
+          firebaseUID: user.uid,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          firebaseToken: token
+        }),
+      })
+      
+      // Set token in secure cookie
+      await fetch('/api/auth/set-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      })
+      
+      setTimeout(() => {
+        router.push(redirectTo)
+      }, 1500)
     } catch (error: any) {
-      setError(error.message || "Failed to login with Google.")
+      const errorMessage = getFirebaseErrorMessage(error.code) || "Failed to login with Google."
+      showNotification(errorMessage, "error")
     } finally {
       setLoading(false)
     }
   }
 
+  const handleAuth0Login = () => {
+    const returnTo = encodeURIComponent(`${window.location.origin}${redirectTo}`)
+    window.location.href = `/api/auth/login?returnTo=${returnTo}`
+  }
+
   const handleDemoLogin = () => {
     setError("")
     setLoading(true)
+    showNotification("Demo mode: Login successful!", "success")
     setTimeout(() => {
       setLoading(false)
-      alert("Demo mode: Login successful! In a real app, this would authenticate you.")
-      router.push("/")
+      router.push(redirectTo)
     }, 1000)
+  }
+
+  const getFirebaseErrorMessage = (errorCode: string): string => {
+    switch (errorCode) {
+      case 'auth/user-not-found':
+        return 'No account found with this email address.'
+      case 'auth/wrong-password':
+        return 'Incorrect password. Please try again.'
+      case 'auth/invalid-email':
+        return 'Invalid email address format.'
+      case 'auth/user-disabled':
+        return 'This account has been disabled.'
+      case 'auth/too-many-requests':
+        return 'Too many failed login attempts. Please try again later.'
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your connection.'
+      case 'auth/popup-closed-by-user':
+        return 'Login was cancelled.'
+      case 'auth/popup-blocked':
+        return 'Popup was blocked. Please allow popups and try again.'
+      case 'auth/invalid-credential':
+        return 'Invalid credentials. Please check your email and password.'
+      default:
+        return 'An error occurred during login. Please try again.'
+    }
+  }
+
+  if (auth0Loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <p>Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (auth0User) {
+    return null // Will redirect in useEffect
   }
 
   return (
@@ -97,7 +238,7 @@ export default function LoginPage() {
             </div>
             <CardTitle className="text-2xl">Welcome back</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Choose your preferred login method
             </CardDescription>
           </CardHeader>
           
@@ -106,10 +247,31 @@ export default function LoginPage() {
 
             {error && (
               <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
+            {success && (
+              <Alert className="border-green-200 bg-green-50 text-green-800">
+                <CheckCircle className="h-4 w-4" />
+                <AlertDescription>{success}</AlertDescription>
+              </Alert>
+            )}
+
+            {/* Auth0 Login */}
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={handleAuth0Login}
+              disabled={loading}
+              type="button"
+            >
+              <div className="mr-2 h-4 w-4 rounded-full bg-gradient-to-r from-orange-500 to-red-500"></div>
+              Continue with Auth0
+            </Button>
+
+            {/* Google Login */}
             <Button
               variant="outline"
               className="w-full"
@@ -163,7 +325,15 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link 
+                    href="/forgot-password" 
+                    className="text-xs text-muted-foreground hover:text-primary underline underline-offset-4"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <Input
                   id="password"
                   type="password"
@@ -175,7 +345,7 @@ export default function LoginPage() {
 
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Login {!firebaseConfigured && "(Demo)"}
+                Sign In {!firebaseConfigured && "(Demo)"}
               </Button>
             </form>
           </CardContent>
@@ -195,5 +365,20 @@ export default function LoginPage() {
       <ChatbotPopup />
       <CookieConsentBanner />
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="h-8 w-8 animate-spin" />
+          <p>Loading...</p>
+        </div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   )
 }

@@ -1,8 +1,10 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ChatbotProvider } from "@/components/chatbot-context"
-import { ChatbotPopup } from "@/components/chatbot-popup"
+import { AuthProvider } from "@/contexts/AuthContext"
+import { Toaster } from 'sonner'
 import React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -86,9 +88,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={`${inter.className} h-full`}>
-        <ChatbotProvider>
-          {children}
-        </ChatbotProvider>
+        <AuthProvider>
+          <ChatbotProvider>
+            {children}
+            <Toaster position="top-right" />
+          </ChatbotProvider>
+        </AuthProvider>
       </body>
     </html>
   )

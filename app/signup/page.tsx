@@ -1,3 +1,4 @@
+// app/signup/page.tsx - Updated with proper validation and error styling
 "use client"
 
 import { useState } from "react"
@@ -15,12 +16,13 @@ import { Separator } from "@/components/ui/separator"
 import { CountrySelector } from "@/components/country-selector"
 import { Logo } from "@/components/logo"
 import { FirebaseWarning } from "@/components/firebase-warning"
-import { Loader2 } from "lucide-react"
+import { Loader2, AlertCircle } from "lucide-react"
 import { CookieConsentBanner } from "@/components/cookie-consent-banner"
 import { SiteHeader } from "@/components/site-header"
 import { Footer } from "@/components/footer"
+import { cn } from "@/lib/utils"
 
-export const dynamic = 'force-dynamic' // Disable static generation
+export const dynamic = 'force-dynamic'
 
 export default function SignUpPage() {
   const [formData, setFormData] = useState({
@@ -34,45 +36,76 @@ export default function SignUpPage() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const router = useRouter()
   const firebaseConfigured = isFirebaseConfigured()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    
+    // Clear field error when user starts typing
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => ({ ...prev, [name]: "" }))
+    }
   }
 
   const handleCountryChange = (country: string) => {
     setFormData((prev) => ({ ...prev, country }))
+    if (fieldErrors.country) {
+      setFieldErrors(prev => ({ ...prev, country: "" }))
+    }
   }
 
   const validateForm = () => {
-    if (!formData.firstName.trim()) return "First name is required"
-    if (!formData.lastName.trim()) return "Last name is required"
-    if (!formData.email.trim()) return "Email is required"
-    if (!formData.password) return "Password is required"
-    if (formData.password.length < 6) return "Password must be at least 6 characters"
-    if (formData.password !== formData.confirmPassword) return "Passwords do not match"
-    if (!formData.phoneNumber.trim()) return "Phone number is required"
-    if (!formData.country) return "Country is required"
-    return null
+    const errors: Record<string, string> = {}
+    
+    if (!formData.firstName.trim()) errors.firstName = "First name is required"
+    if (!formData.lastName.trim()) errors.lastName = "Last name is required"
+    if (!formData.email.trim()) errors.email = "Email is required"
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = "Email is invalid"
+    if (!formData.password) errors.password = "Password is required"
+    else if (formData.password.length < 6) errors.password = "Password must be at least 6 characters"
+    if (formData.password !== formData.confirmPassword) errors.confirmPassword = "Passwords do not match"
+    if (!formData.phoneNumber.trim()) errors.phoneNumber = "Phone number is required"
+    if (!formData.country) errors.country = "Country is required"
+    
+    setFieldErrors(errors)
+    return Object.keys(errors).length === 0
   }
 
   const saveUserData = async (user: any, additionalData: any = {}) => {
-    if (!db) return
-
     try {
-      await setDoc(doc(db, "users", user.uid), {
-        firstName: additionalData.firstName || formData.firstName,
-        lastName: additionalData.lastName || formData.lastName,
-        email: user.email,
-        phoneNumber: additionalData.phoneNumber || formData.phoneNumber,
-        country: additionalData.country || formData.country,
-        createdAt: new Date().toISOString(),
-        ...additionalData,
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: user.email,
+          firstName: additionalData.firstName || formData.firstName,
+          lastName: additionalData.lastName || formData.lastName,
+          displayName: `${formData.firstName} ${formData.lastName}`,
+          phoneNumber: additionalData.phoneNumber || formData.phoneNumber,
+          country: additionalData.country || formData.country,
+          loginMethod: 'firebase',
+          firebaseUID: user.uid,
+          ...additionalData,
+        }),
       })
+
+      if (!response.ok) {
+        const data = await response.json()
+        if (data.error === 'User already exists') {
+          setFieldErrors({ email: "An account with this email already exists" })
+          return false
+        }
+        throw new Error(data.error || 'Failed to save user data')
+      }
+      return true
     } catch (error) {
       console.error("Error saving user data:", error)
+      return false
     }
   }
 
@@ -80,16 +113,11 @@ export default function SignUpPage() {
     e.preventDefault()
 
     if (!firebaseConfigured || !auth) {
-      return (
-        <div className="p-6">
-          <FirebaseWarning />
-        </div>
-      )
+      setError("Authentication is not configured. Please contact support.")
+      return
     }
 
-    const validationError = validateForm()
-    if (validationError) {
-      setError(validationError)
+    if (!validateForm()) {
       return
     }
 
@@ -104,10 +132,20 @@ export default function SignUpPage() {
         displayName: `${formData.firstName} ${formData.lastName}`,
       })
 
-      await saveUserData(user)
-      router.push("/dashboard")
+      const saved = await saveUserData(user)
+      if (saved) {
+        router.push("/dashboard")
+      }
     } catch (error: any) {
-      setError(error.message || "An error occurred during sign up")
+      if (error.code === 'auth/email-already-in-use') {
+        setFieldErrors({ email: "An account with this email already exists" })
+      } else if (error.code === 'auth/weak-password') {
+        setFieldErrors({ password: "Password is too weak" })
+      } else if (error.code === 'auth/invalid-email') {
+        setFieldErrors({ email: "Invalid email address" })
+      } else {
+        setError(error.message || "An error occurred during sign up")
+      }
     } finally {
       setLoading(false)
     }
@@ -127,15 +165,17 @@ export default function SignUpPage() {
       const user = result.user
 
       const names = user.displayName?.split(" ") || ["", ""]
-      await saveUserData(user, {
+      const saved = await saveUserData(user, {
         firstName: names[0] || "",
         lastName: names.slice(1).join(" ") || "",
         phoneNumber: "",
         country: "",
-        signUpMethod: "google",
+        loginMethod: "google",
       })
 
-      router.push("/complete-profile")
+      if (saved) {
+        router.push("/complete-profile")
+      }
     } catch (error: any) {
       setError(error.message || "An error occurred during Google sign up")
     } finally {
@@ -162,11 +202,11 @@ export default function SignUpPage() {
           <Card className="w-full max-w-md">
             <CardHeader className="space-y-1 text-center">
               <div className="flex justify-center mb-4">
-                <Logo height={150} width={75} />
+                <Logo height={120} width={60} />
               </div>
               <CardTitle className="text-2xl">Create your account</CardTitle>
               <CardDescription>
-                Enter your details below to create your Cohound account and get the app.
+                Enter your details below to create your Cohound account.
               </CardDescription>
             </CardHeader>
             
@@ -175,6 +215,7 @@ export default function SignUpPage() {
 
               {error && (
                 <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
@@ -238,8 +279,12 @@ export default function SignUpPage() {
                       type="text"
                       value={formData.firstName}
                       onChange={handleInputChange}
+                      className={cn(fieldErrors.firstName && "border-red-500 focus-visible:ring-red-500")}
                       required
                     />
+                    {fieldErrors.firstName && (
+                      <p className="text-sm text-red-500">{fieldErrors.firstName}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">Last name</Label>
@@ -249,8 +294,12 @@ export default function SignUpPage() {
                       type="text"
                       value={formData.lastName}
                       onChange={handleInputChange}
+                      className={cn(fieldErrors.lastName && "border-red-500 focus-visible:ring-red-500")}
                       required
                     />
+                    {fieldErrors.lastName && (
+                      <p className="text-sm text-red-500">{fieldErrors.lastName}</p>
+                    )}
                   </div>
                 </div>
 
@@ -262,8 +311,12 @@ export default function SignUpPage() {
                     type="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    className={cn(fieldErrors.email && "border-red-500 focus-visible:ring-red-500")}
                     required
                   />
+                  {fieldErrors.email && (
+                    <p className="text-sm text-red-500">{fieldErrors.email}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -274,16 +327,25 @@ export default function SignUpPage() {
                     type="tel"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
+                    className={cn(fieldErrors.phoneNumber && "border-red-500 focus-visible:ring-red-500")}
+                    placeholder="Enter your phone number"
                     required
                   />
+                  {fieldErrors.phoneNumber && (
+                    <p className="text-sm text-red-500">{fieldErrors.phoneNumber}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="country">Country</Label>
                   <CountrySelector 
                     value={formData.country} 
-                    onValueChange={handleCountryChange} 
+                    onValueChange={handleCountryChange}
+                    className={cn(fieldErrors.country && "border-red-500 focus-visible:ring-red-500")}
                   />
+                  {fieldErrors.country && (
+                    <p className="text-sm text-red-500">{fieldErrors.country}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -294,8 +356,12 @@ export default function SignUpPage() {
                     type="password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    className={cn(fieldErrors.password && "border-red-500 focus-visible:ring-red-500")}
                     required
                   />
+                  {fieldErrors.password && (
+                    <p className="text-sm text-red-500">{fieldErrors.password}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -306,8 +372,12 @@ export default function SignUpPage() {
                     type="password"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
+                    className={cn(fieldErrors.confirmPassword && "border-red-500 focus-visible:ring-red-500")}
                     required
                   />
+                  {fieldErrors.confirmPassword && (
+                    <p className="text-sm text-red-500">{fieldErrors.confirmPassword}</p>
+                  )}
                 </div>
 
                 <Button type="submit" className="w-full" disabled={loading}>

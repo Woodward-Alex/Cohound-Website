@@ -1,15 +1,16 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
-import { useChatbot } from "@/components/chatbot-context";
+"use client"
+
+import { useRouter } from "next/navigation"
+import { Badge } from "@/components/ui/badge"
+import { useChatbot } from "@/components/chatbot-context"
 
 export function MainNav() {
-  const router = useRouter();
-  const { setIsOpen } = useChatbot();
+  const router = useRouter()
+  const { setIsOpen } = useChatbot()
 
   const navigateToSection = (section: string) => {
-    router.push(`/#${section}`);
-  };
+    router.push(`/#${section}`)
+  }
 
   return (
     <nav className="flex items-center gap-4 sm:gap-6">
@@ -50,5 +51,5 @@ export function MainNav() {
         </Badge>
       </button>
     </nav>
-  );
+  )
 }

@@ -1,5 +1,6 @@
+// lib/firebase.ts
 import { initializeApp, getApps } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, User } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -23,4 +24,40 @@ export const googleProvider = isBrowser ? new GoogleAuthProvider() : null
 export function isFirebaseConfigured() {
   return !!firebaseConfig.apiKey && !!firebaseConfig.projectId
 }
-//Firebase Auth Keys https://console.firebase.google.com/project/cohound-fb002/settings/general/web:ZDViNmM2MWQtZTE0ZS00MmI4LTg5MjEtMDY1MDU1ZDg3MjBi
+
+// JWT Token management
+export const getAuthToken = async (): Promise<string | null> => {
+  if (!auth?.currentUser) return null
+  
+  try {
+    const token = await auth.currentUser.getIdToken(true)
+    return token
+  } catch (error) {
+    console.error('Error getting auth token:', error)
+    return null
+  }
+}
+
+// Auth state observer
+export const onAuthStateChange = (callback: (user: User | null) => void) => {
+  if (!auth) return () => {}
+  
+  return onAuthStateChanged(auth, callback)
+}
+
+// Store tokens in memory (not localStorage for security)
+let authToken: string | null = null
+let refreshToken: string | null = null
+
+export const setAuthTokens = (token: string, refresh: string) => {
+  authToken = token
+  refreshToken = refresh
+}
+
+export const getStoredAuthToken = () => authToken
+export const getStoredRefreshToken = () => refreshToken
+
+export const clearAuthTokens = () => {
+  authToken = null
+  refreshToken = null
+}

@@ -3,14 +3,12 @@ import withPWA from "next-pwa"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Ignore ESLint errors during build
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Ignore TypeScript errors during build
   },
-  // Skip generating 404 page
-  skipTrailingSlashRedirect: true,
-  output: 'standalone',
+  // ... rest of your config
 }
 
 export default withPWA({

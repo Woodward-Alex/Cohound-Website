@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import { useChat } from "@ai-sdk/react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,10 +13,15 @@ interface ChatbotProps {
   onClose: () => void
 }
 
+interface Message {
+  id: string
+  role: "user" | "assistant"
+  content: string
+}
+
 export function Chatbot({ onClose }: ChatbotProps) {
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setMessages } = useChat({
-    api: "/api/chat",
-  })
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState("")
   const [isThinking, setIsThinking] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -44,16 +48,18 @@ export function Chatbot({ onClose }: ChatbotProps) {
   const handleSubmitWithAutoResponse = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     
+    if (!input.trim()) return
+    
     // Add user's message immediately
-    const userMessage = {
+    const userMessage: Message = {
       id: Date.now().toString(),
-      role: "user" as const,
+      role: "user",
       content: input
     }
-    setMessages([...messages, userMessage])
+    setMessages(prev => [...prev, userMessage])
     
     // Clear input
-    handleInputChange({ target: { value: '' } } as React.ChangeEvent<HTMLInputElement>)
+    setInput('')
     
     // Show thinking indicator
     setIsThinking(true)
@@ -62,9 +68,9 @@ export function Chatbot({ onClose }: ChatbotProps) {
     await new Promise(resolve => setTimeout(resolve, 2000))
     
     // Add auto-response
-    const autoResponse = {
+    const autoResponse: Message = {
       id: (Date.now() + 1).toString(),
-      role: "assistant" as const,
+      role: "assistant",
       content: "Check out the list in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a> or <a href='/login' class='text-primary underline'> Log In</a> "
     }
     
@@ -74,12 +80,12 @@ export function Chatbot({ onClose }: ChatbotProps) {
 
   const handleExamplePrompt = async (prompt: string) => {
     // Add user's message immediately
-    const userMessage = {
+    const userMessage: Message = {
       id: Date.now().toString(),
-      role: "user" as const,
+      role: "user",
       content: prompt
     }
-    setMessages([...messages, userMessage])
+    setMessages(prev => [...prev, userMessage])
     
     // Show thinking indicator
     setIsThinking(true)
@@ -88,9 +94,9 @@ export function Chatbot({ onClose }: ChatbotProps) {
     await new Promise(resolve => setTimeout(resolve, 2000))
     
     // Add auto-response
-    const autoResponse = {
+    const autoResponse: Message = {
       id: (Date.now() + 1).toString(),
-      role: "assistant" as const,
+      role: "assistant",
       content: "Check out the list in the app here: <a href='/signup' class='text-primary underline'>Sign Up</a> or <a href='/login' class='text-primary underline'> Log In</a> "
     }
     
@@ -99,7 +105,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
   }
 
   return (
-    <div className="fixed bottom-4 rightt-4 right-4 w-[calc(100%-2rem)] max-w-md h-[78vh] max-h-[700px] bg-card shadow-xl rounded-lg flex flex-col border z-50">
+    <div className="fixed bottom-4 right-4 w-[calc(100%-2rem)] max-w-md h-[78vh] max-h-[700px] bg-card shadow-xl rounded-lg flex flex-col border z-50">
       <header className="bg-primary text-primary-foreground p-4 rounded-t-lg flex items-center">
         <div className="flex items-center gap-2">
           <Logo iconOnlyWhite/>
@@ -193,7 +199,7 @@ export function Chatbot({ onClose }: ChatbotProps) {
                 size="sm"
                 className="w-full justify-start text-left h-auto py-1.5 whitespace-normal break-words"
                 onClick={() => handleExamplePrompt(prompt)}
-                disabled={isLoading || isThinking}
+                disabled={isThinking}
               >
                 {prompt}
               </Button>
@@ -206,15 +212,15 @@ export function Chatbot({ onClose }: ChatbotProps) {
         <Input
           ref={inputRef}
           value={input}
-          onChange={handleInputChange}
+          onChange={(e) => setInput(e.target.value)}
           placeholder="Ask me anything about dogs..."
           className="flex-1"
-          disabled={isLoading || isThinking}
+          disabled={isThinking}
         />
         <Button
             type="submit"
             size="icon"
-            disabled={isLoading || isThinking || !(input ?? "").trim()}
+            disabled={isThinking || !input.trim()}
           >
             <Send size={18} />
             <span className="sr-only">Send message</span>

@@ -1,17 +1,19 @@
+import withPWA from "next-pwa"
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true, // Ignore ESLint errors during build
   },
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: true, // Ignore TypeScript errors during build
   },
-  // Skip 404 generation entirely
-  generateBuildId: async () => {
-    return 'build-' + Date.now()
-  },
-  // Disable all static optimization
-  reactStrictMode: false,
+  // ... rest of your config
 }
 
-export default nextConfig
+export default withPWA({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+  register: true,
+  skipWaiting: true,
+})(nextConfig)
